@@ -11,9 +11,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.function.Function;
 
 @CrossOrigin("*")
@@ -47,21 +50,22 @@ public class TourController {
         return new ResponseEntity<>(tourDTO, HttpStatus.OK);
     }
 
-    @PostMapping("/create-tour")
+    @PostMapping("/admin/create-tour")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> createTour(@RequestBody TourDTO tourCreateForm){
         tourService.createTour(tourCreateForm);
         return new ResponseEntity<String>("Created success !", HttpStatus.OK);
     }
 
-
-    @PutMapping(value = "/update/{id}")
+    @PutMapping(value = "/admin/update/{id}")
+    @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<?> updateTour(@PathVariable(name = "id") short id, @RequestBody  TourDTO tourUpdateForm) {
         tourService.updateTour(id, tourUpdateForm);
         return new ResponseEntity<String>("Update successfully!", HttpStatus.OK);
     }
 
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/admin/delete/{id}")
 //    @Secured("User")
     public ResponseEntity<?> deleteTour(@PathVariable(name = "id") int id){
         tourService.deleteTourById(id);

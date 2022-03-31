@@ -1,8 +1,11 @@
 package com.me.travel_backend.config.authentication;
 
+import com.me.travel_backend.entity.enumerate.UserRole;
 import com.me.travel_backend.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Role;
+import org.springframework.context.support.BeanDefinitionDsl;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -18,9 +21,14 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.google.common.collect.ImmutableList;
 
+import javax.annotation.security.RolesAllowed;
+
 @Component
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(
+		prePostEnabled = true,
+		jsr250Enabled = true
+)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
@@ -42,6 +50,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.antMatchers("/api/v1/users/email").authenticated()
 		.antMatchers("/api/v1/users/**").permitAll()
 		.antMatchers("/api/v1/tours/**").permitAll()
+		.antMatchers("/api/v1/actives/**").permitAll()
+		//.antMatchers("/api/v1/tours/admin/**").permitAll()
 		.anyRequest().authenticated()
 		.and()
 		.httpBasic()

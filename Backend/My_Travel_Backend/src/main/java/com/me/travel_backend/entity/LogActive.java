@@ -32,6 +32,7 @@ public class LogActive implements Serializable {
     private String messenger;
 
     @Enumerated(EnumType.ORDINAL)
+    @Column(name = "`level`", nullable = false)
     private LevelActive levelActive;
 
     @Temporal(TemporalType.TIMESTAMP)

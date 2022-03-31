@@ -1,15 +1,12 @@
 package com.me.travel_backend.specification;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 
+import com.me.travel_backend.entity.Province;
 import com.me.travel_backend.entity.Tour;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.Date;
-
 
 public class TourSpecification implements Specification<Tour> {
 
@@ -25,6 +22,16 @@ public class TourSpecification implements Specification<Tour> {
 
 		if (criteria.getOperator().equalsIgnoreCase("Like")) {
 			return criteriaBuilder.like(root.get(criteria.getKey()), "%" + criteria.getValue().toString() + "%");
+		}
+
+		if (criteria.getOperator().equalsIgnoreCase("Likes") && criteria.getKey().equalsIgnoreCase("province")){
+			Join<Tour, Province> join1 = root.join("province", JoinType.LEFT);
+			return criteriaBuilder.like(join1.get("nameProvince"), "%" + criteria.getValue().toString() + "%");
+		}
+
+		if (criteria.getOperator().equalsIgnoreCase("Likes") && criteria.getKey().equalsIgnoreCase("location")){
+			Join<Tour, Province> join1 = root.join("location", JoinType.LEFT);
+			return criteriaBuilder.like(join1.get("location"), "%" + criteria.getValue().toString() + "%");
 		}
 
 		if (criteria.getOperator().equalsIgnoreCase("Date>=")) {

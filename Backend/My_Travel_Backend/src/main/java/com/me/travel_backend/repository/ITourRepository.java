@@ -9,5 +9,4 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 public interface ITourRepository extends JpaRepository<Tour, Integer>, JpaSpecificationExecutor<Tour> {
     public Tour findTourByTourName(String tourName);
 
-
 }

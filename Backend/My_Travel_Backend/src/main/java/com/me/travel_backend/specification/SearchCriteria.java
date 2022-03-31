@@ -1,9 +1,9 @@
 package com.me.travel_backend.specification;
 
 public class SearchCriteria {
-	private String key;
-	private String operator;
-	private Object value;
+	private final String key;
+	private final String operator;
+	private final Object value;
 
 	public SearchCriteria(String key, String operator, Object value) {
 		this.key = key;

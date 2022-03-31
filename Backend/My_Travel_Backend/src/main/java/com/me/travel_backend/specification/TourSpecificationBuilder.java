@@ -1,5 +1,4 @@
 package com.me.travel_backend.specification;
-
 import com.me.travel_backend.entity.Search.TourSearch;
 import com.me.travel_backend.entity.Tour;
 import com.me.travel_backend.entity.filter.TourFilter;
@@ -23,6 +22,8 @@ public class TourSpecificationBuilder {
 	public Specification<Tour> build() {
 
 		SearchCriteria searchTourNameCriteria = new SearchCriteria("tourName", "Like", search.getTourName());
+		SearchCriteria searchProvinceCriteria = new SearchCriteria("province", "Likes", search.getProvince());
+		SearchCriteria searchLocationCriteria = new SearchCriteria("location", "Likes", search.getLocation());
 		SearchCriteria minDateCriteria = new SearchCriteria("dayStart", "Date>=", filter.getMinDate());
 		SearchCriteria maxDateCriteria = new SearchCriteria("dayEnd", "Date<=", filter.getMaxDate());
 
@@ -31,6 +32,24 @@ public class TourSpecificationBuilder {
 		// search Tour Name
 		if (!StringUtils.isEmpty(search.getTourName())) {
 			where = new TourSpecification(searchTourNameCriteria);
+		}
+
+		// search Province
+		if(!StringUtils.isEmpty(search.getProvince())){
+			if(where != null){
+				where= where.and(new TourSpecification(searchProvinceCriteria));
+			}else {
+				where = new TourSpecification(searchProvinceCriteria);
+			}
+		}
+
+		// search Location
+		if(!StringUtils.isEmpty(search.getLocation())){
+			if(where != null){
+				where= where.and(new TourSpecification(searchLocationCriteria));
+			}else {
+				where = new TourSpecification(searchLocationCriteria);
+			}
 		}
 
 		// min Date filter
